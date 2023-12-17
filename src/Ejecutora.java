@@ -2,13 +2,8 @@ import java.util.Scanner;
 
 public class Ejecutora {
 
-	private void registrarDatosDePrueba(Banco banco) {
-		banco.registrarCliente();
-	}
-
 	public static void main(String[] args) {
 		Scanner in = new Scanner(System.in);
-
 		Banco banco = new Banco();
 
 		int opcion;
@@ -43,28 +38,32 @@ public class Ejecutora {
 					break;
 
 				case 3:
-
 					banco.inscripcionAPrestamo();
 					break;
 
 				case 4:
-
-					// bco.asignarPrestamoCliente(codSoli);
+					banco.asignarPrestamoCliente();
 					break;
 
 				case 5:
+					banco.registrarItem();
 					break;
 
 				case 6:
+					// banco.modificarPuntuacionCliente();
 					break;
 
 				case 7:
+					banco.informarClientes();
 					break;
 
 				case 8:
 					break;
 
 				case 9:
+					break;
+
+				case 10:
 					break;
 
 				case 11:
@@ -74,10 +73,12 @@ public class Ejecutora {
 				case 12:
 					banco.eliminarSolicitudCliente();
 					break;
+
 			}
 			System.out.println("-------------------------");
 		} while (opcion != 0);
 
 		in.close();
+
 	}
 }

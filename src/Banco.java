@@ -7,6 +7,7 @@ import Utilidades.Fecha;
 import Utilidades.Titulo;
 
 public class Banco {
+
 	private final ArrayList<Prestamo> prestamos = new ArrayList<>();
 	private final ArrayList<Item> itemsRequisitos = new ArrayList<>();
 	private final ArrayList<Cliente> clientes = new ArrayList<>();
@@ -18,14 +19,14 @@ public class Banco {
 		Titulo.mostrar("REGISTRAR PRESTAMO");
 
 		System.out.println("ID del prestamo: ");
+
 		int id = in.nextInt();
 
 		Prestamo prestamo = this.buscarPrestamo(id);
 
 		if (prestamo == null) {
 			System.out.println("Tipo de prestamo: ");
-			in.nextLine();
-
+			in.nextLine(); // Llamada a leer linea vacia para control de errores despues de nextInt
 			String tipo = in.nextLine();
 
 			System.out.println("Descripcion del prestamo: ");
@@ -36,7 +37,9 @@ public class Banco {
 			do {
 				System.out.println("Moneda del prestamo (Peso/Dolar): ");
 				moneda = in.nextLine();
-			} while (!(moneda.equalsIgnoreCase("Dolar") || moneda.equalsIgnoreCase("Peso")));
+			} while (!(moneda.equalsIgnoreCase("Dolar") || moneda.equalsIgnoreCase("Peso"))); // Se ejecutara mientras
+																								// moneda no sea ni peso
+																								// ni dolar
 
 			System.out.println("Monto del prestamo: ");
 			double monto = in.nextDouble();
@@ -45,7 +48,6 @@ public class Banco {
 			System.out.println("Carga de requisitos minimos para solicitar este prestamo. ");
 
 			int opc = 1;
-
 			do {
 				System.out.println("Ingrese el nombre del requisito a añadir puntaje minimo: ");
 				in.nextLine();
@@ -53,14 +55,17 @@ public class Banco {
 				Item i = this.buscarItem(nombreReq);
 
 				int op = 1;
+
 				while (i == null) {
-					System.out.println("El requisito ingresado no se encuentra entre los requisitos existentes");
+					System.out.println(
+							"El requisito ingresado no se encuentra entre los requisitos existentes.");
+
 					System.out.println("Desea crear uno nuevo con ese nombre? (1 = Si ; 0 = No)");
 
 					op = in.nextInt();
 
 					if (op == 1) {
-						System.out.println("Ingrese la descripcion para el nuevo requisito " + nombreReq);
+						System.out.println("Ingrese la descripcion para el nuevo requisito " + nombreReq + ":");
 						in.nextLine();
 						String desc = in.nextLine();
 
@@ -88,13 +93,14 @@ public class Banco {
 			if (moneda.equalsIgnoreCase("Dolar")) {
 				Dolar prestamoDolar = new Dolar(id, tipo, descr, reqMin, monto);
 				prestamos.add(prestamoDolar);
+				System.out.println("Prestamo registrado con exito! ");
 			} else if (moneda.equalsIgnoreCase("Peso")) {
 				Peso prestamoPeso = new Peso(id, tipo, descr, reqMin, monto);
 				prestamos.add(prestamoPeso);
+				System.out.println("Prestamo registrado con exito! ");
 			}
-
 		} else {
-			System.out.println("Ya existe un prestamo con ese mismo codigo");
+			System.out.println("Ya existe un prestamo con ese mismo codigo!");
 		}
 
 		in.close();
@@ -106,7 +112,6 @@ public class Banco {
 		Titulo.mostrar("REGISTRAR CLIENTE");
 
 		String tipo;
-
 		do {
 			System.out.println("Tipo de cliente (Fisico / Juridico): ");
 			tipo = in.next();
@@ -118,17 +123,17 @@ public class Banco {
 
 			if (this.buscarCliente(dni) == null) {
 				System.out.println("Ingresa el nombre: ");
-				String nom = in.nextLine();
+				String nom = in.next();
 
 				System.out.println("Ingresa el apellido: ");
-				String ape = in.nextLine();
+				String ape = in.next();
 
 				System.out.println("Fecha de registro en el banco: ");
 				Fecha f = Fecha.nuevaFecha();
 
 				Fisico cliFisico = new Fisico(f, nom, ape, dni);
-
 				clientes.add(cliFisico);
+				System.out.println("Cliente registrado con exito! ");
 
 			} else
 				System.out.println("Ya existe un cliente con ese DNI");
@@ -147,11 +152,10 @@ public class Banco {
 
 				Juridico cliJuridico = new Juridico(f, razonSoc, cuit);
 				clientes.add(cliJuridico);
+				System.out.println("Cliente registrado con exito! ");
 
-			} else {
+			} else
 				System.out.println("Ya existe un cliente con ese cuit");
-			}
-
 		}
 
 		in.close();
@@ -162,33 +166,60 @@ public class Banco {
 
 		Titulo.mostrar("INSCRIPCION A PRESTAMO");
 
-		System.out.println("Ingrese numero cliente: ");
-		String numeroCliente = in.next();
+		System.out.println("Ingresa el DNI o CUIT del cliente: ");
+		String nroCliente = in.next();
 
-		System.out.println("Ingrese codigo de prestamo: ");
-		int codigoPrestamo = in.nextInt();
-
-		Cliente cliente = this.buscarCliente(numeroCliente);
+		Cliente cliente = this.buscarCliente(nroCliente);
 
 		if (cliente != null) {
-			Prestamo prestamo = this.buscarPrestamo(codigoPrestamo);
+			String tipoDeCliente = cliente.tipoDeCliente();
 
-			if (prestamo != null) {
-				System.out.println("Ingrese el numero de solicitud de prestamo: ");
+			int cantidadMax = 0;
+			int cantidadPrestamos = 0;
 
-				int numeroSolicitud = in.nextInt();
+			if (tipoDeCliente.equalsIgnoreCase("fisico")) {
+				cantidadMax = ((Fisico) cliente).getCantidadMaxPrestamos();
+				cantidadPrestamos = cliente.getCantPrestamos();
+			}
 
-				SolicitudPrestamo solicitud = this.buscarSolicitud(numeroSolicitud);
-
-				if (solicitud == null) {
-					solicitud = new SolicitudPrestamo(cliente, prestamo, numeroSolicitud);
-					solicitudesPrestamos.add(solicitud);
-					registrarPuntuacion(cliente, prestamo);
-				} else {
-					System.out.println("Ya existe una solicitud con ese numero ");
-				}
+			if (tipoDeCliente.equalsIgnoreCase("fisico") && cantidadPrestamos >= cantidadMax) {
+				System.out.println("\nEl cliente fisico ya esta inscripto a la cantidad maxima de prestamos");
 			} else {
-				System.out.println("El prestamo no existe ");
+				System.out.println("Ingrese codigo de prestamo: ");
+				int codPres = in.nextInt();
+				Prestamo prestamo = this.buscarPrestamo(codPres);
+
+				while (cliente.estaInscripto(prestamo)) {
+					System.out
+							.println("El cliente ya esta inscripto en ese prestamo. Ingrese otro codigo de prestamo: ");
+					codPres = in.nextInt();
+					prestamo = this.buscarPrestamo(codPres);
+				}
+
+				if (prestamo != null) {
+					String tipoDePrestamo = prestamo.tipoDePrestamo();
+					int antiguedad = cliente.antiguedad();
+
+					if (tipoDePrestamo.equalsIgnoreCase("dolar") && antiguedad < 2) {
+						System.out.println(
+								"La antiguedad del cliente no alcanza la minima de 2 años para aceptar el prestamo en dolares");
+					} else {
+						System.out.println("Ingrese el numero de solicitud de prestamo: ");
+						int numeroSolicitud = in.nextInt();
+						SolicitudPrestamo solicitud = this.buscarSolicitud(numeroSolicitud);
+
+						if (solicitud == null) {
+							solicitud = new SolicitudPrestamo(cliente, prestamo, numeroSolicitud);
+							solicitudesPrestamos.add(solicitud);
+							cliente.agregarSolicitud(solicitud);
+							registrarPuntuacion(cliente, prestamo);
+						} else {
+							System.out.println("Ya existe una solicitud con ese numero ");
+						}
+					}
+				} else {
+					System.out.println("El prestamo no existe ");
+				}
 			}
 		} else {
 			System.out.println("El cliente no existe ");
@@ -229,16 +260,65 @@ public class Banco {
 	}
 
 	private void registrarPuntuacion(Cliente cliente, Prestamo prestamo) {
-		/*
-		 * Enumeration<Producto> enumP=stocks.keys();
-		 * while(enumP.hasMoreElements())
-		 * {
-		 * p=enumP.nextElement();
-		 * suma+=p.getPrecioUnitario()*stocks.get(p);
-		 * }
-		 */
+		Scanner in = new Scanner(System.in);
+		Item i;
+		int p, op = 0;
 
+		Titulo.mostrar("REGISTRAR PUNTUACIONES DEL CLIENTE");
+
+		var requisitosMinimos = prestamo.getReqMinimos();
+		var enumItems = requisitosMinimos.keys();
+
+		while (enumItems.hasMoreElements()) {
+			i = enumItems.nextElement();
+			if (cliente.hasItem(i)) {
+				System.out.println("La puntuacion del cliente en " + i.getNombre() + " es de " + cliente.getPuntaje(i));
+				System.out.println("Deseas modificarla? (1 = Si ; 0 = No)");
+				op = in.nextInt();
+				if (op == 1) {
+					System.out.println("Ingresa la nueva puntuacion del cliente en " + i.getNombre());
+					p = in.nextInt();
+					cliente.agregarPuntaje(i, p);
+				}
+			} else {
+				System.out.println("Ingresa la puntuacion del cliente en " + i.getNombre());
+				p = in.nextInt();
+				cliente.agregarPuntaje(i, p);
+			}
+		}
+
+		in.close();
 	}
+
+	public void asignarPrestamoCliente() {
+		Scanner in = new Scanner(System.in);
+
+		Titulo.mostrar("ASIGNAR PRESTAMO A CLIENTE");
+
+		System.out.println("Ingrese numero de solicitud: ");
+
+		int codSoli = in.nextInt();
+
+		SolicitudPrestamo solicitud = this.buscarSolicitud(codSoli);
+
+		if (solicitud != null) {
+			solicitud.asignarCliente();
+		} else {
+			System.out.println("La solicitud no existe");
+		}
+
+		in.close();
+	}
+
+	/*
+	 * public void modificarPuntuacionCliente()
+	 * {
+	 * Scanner s = new Scanner (System.in);
+	 * System.out.println("---- MODIFICAR PUNTUACION DE CLIENTE ----");
+	 * System.out.println("Ingresa el DNI o CUIT del cliente: ");
+	 *
+	 * }
+	 */
 
 	private SolicitudPrestamo buscarSolicitud(int numeroSolicitud) {
 		int i = 0;
@@ -267,6 +347,7 @@ public class Banco {
 		}
 
 		return i != prestamos.size() ? prestamos.get(i) : null;
+
 	}
 
 	private Item buscarItem(String n) {
@@ -375,4 +456,5 @@ public class Banco {
 			System.out.println(cliente);
 		}
 	}
+
 }

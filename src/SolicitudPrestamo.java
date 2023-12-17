@@ -1,9 +1,12 @@
+import java.util.Enumeration;
+import java.util.Hashtable;
 
 public class SolicitudPrestamo {
 	private final Cliente cliente;
-	private final int codigoSolicitud;
 	private final Prestamo prestamo;
-	private final String estado;
+	private final int codigoSolicitud;
+	// Inscripto o Asignado
+	private String estado;
 
 	public SolicitudPrestamo(Cliente c, Prestamo p, int cod) {
 		cliente = c;
@@ -22,6 +25,26 @@ public class SolicitudPrestamo {
 
 	public Prestamo getPrestamo() {
 		return prestamo;
+	}
+
+	public void asignarCliente() {
+		estado = "Asignado";
+
+		Hashtable<Item, Integer> reqMin = prestamo.getReqMinimos();
+		Enumeration<Item> enumItems = reqMin.keys();
+
+		while (enumItems.hasMoreElements()) {
+			Item i = enumItems.nextElement();
+
+			if (cliente.getPuntaje(i) < prestamo.getPuntajeMin(i))
+				estado = "Inscripto";
+		}
+
+		if (estado.equalsIgnoreCase("inscripto")) {
+			System.out.println("La puntuacion del cliente no es suficiente para asignarle el prestamo.");
+		} else {
+			System.out.println("Cliente asignado al prestamo con exito!");
+		}
 	}
 
 	@Override

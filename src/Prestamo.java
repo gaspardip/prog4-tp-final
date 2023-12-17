@@ -1,11 +1,11 @@
 import java.util.Hashtable;
 
 public abstract class Prestamo {
-	private final int idPrestamo;
-	private final String tipo;
-	private final String descripcion;
-	private final Hashtable<Item, Integer> requisitosMinimos;
 	private final double monto;
+	private final Hashtable<Item, Integer> requisitosMinimos;
+	private final int idPrestamo;
+	private final String descripcion;
+	private final String tipo;
 
 	public Prestamo(int id, String t, String d, Hashtable<Item, Integer> reqMin, double m) {
 		idPrestamo = id;
@@ -21,6 +21,19 @@ public abstract class Prestamo {
 
 	public boolean sos(int id) {
 		return id == idPrestamo;
+	}
+
+	public int getPuntajeMin(Item item) {
+		return requisitosMinimos.get(item);
+	}
+
+	public Hashtable<Item, Integer> getReqMinimos() {
+		return requisitosMinimos;
+	}
+
+	public String tipoDePrestamo() {
+		String nombre = this.getClass().getName();
+		return nombre;
 	}
 
 	@Override

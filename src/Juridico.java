@@ -1,4 +1,3 @@
-
 import Utilidades.Fecha;
 
 public class Juridico extends Cliente {
@@ -27,6 +26,9 @@ public class Juridico extends Cliente {
 		sb.append(cuit);
 		sb.append("\n");
 
+		sb.append(super.toString());
+
 		return sb.toString();
 	}
+
 }

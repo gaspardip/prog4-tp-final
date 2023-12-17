@@ -12,4 +12,9 @@ public class Item {
 	public boolean sos(String n) {
 		return nombre.equalsIgnoreCase(n);
 	}
+
+	public String getNombre()
+    {
+        return nombre;
+    }
 }

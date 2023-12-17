@@ -1,3 +1,5 @@
+import java.util.Scanner;
+
 import Utilidades.Fecha;
 
 public class Fisico extends Cliente {
@@ -17,6 +19,24 @@ public class Fisico extends Cliente {
 		return dni.equalsIgnoreCase(n);
 	}
 
+	public int getCantidadMaxPrestamos() {
+		return numeroMaxDePrestamos();
+	}
+
+	public static int numeroMaxDePrestamos() {
+		if (maxPrestamosVigentes == 0) {
+			Scanner in = new Scanner(System.in);
+
+			System.out.print("ingrese el maximo de prestamos que puede solicitar un cliente fisico: ");
+
+			maxPrestamosVigentes = in.nextInt();
+
+			in.close();
+		}
+
+		return maxPrestamosVigentes;
+	}
+
 	@Override
 	public String toString() {
 		var sb = new StringBuilder();
@@ -33,6 +53,9 @@ public class Fisico extends Cliente {
 		sb.append(dni);
 		sb.append("\n");
 
+		sb.append(super.toString());
+
 		return sb.toString();
 	}
+
 }
