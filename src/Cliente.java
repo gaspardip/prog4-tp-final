@@ -4,12 +4,11 @@ import java.util.Hashtable;
 import Utilidades.Fecha;
 
 public abstract class Cliente {
-	private final ArrayList<SolicitudPrestamo>solicitudesPrestamos= new ArrayList<>();
+	private final ArrayList<SolicitudPrestamo> solicitudesPrestamos = new ArrayList<>();
 	private final Fecha fechaRegistro;
-	private final Hashtable <Item, Integer>puntuaciones = new Hashtable <>();
+	private final Hashtable<Item, Integer> puntuaciones = new Hashtable<>();
 
-	public Cliente(Fecha f)
-	{
+	public Cliente(Fecha f) {
 		fechaRegistro = f;
 	}
 

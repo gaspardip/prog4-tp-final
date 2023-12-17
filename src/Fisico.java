@@ -16,4 +16,23 @@ public class Fisico extends Cliente {
 	public boolean sos(String n) {
 		return dni.equalsIgnoreCase(n);
 	}
+
+	@Override
+	public String toString() {
+		var sb = new StringBuilder();
+
+		sb.append("Nombre: ");
+		sb.append(nombre);
+		sb.append("\n");
+
+		sb.append("Apellido: ");
+		sb.append(apellido);
+		sb.append("\n");
+
+		sb.append("DNI: ");
+		sb.append(dni);
+		sb.append("\n");
+
+		return sb.toString();
+	}
 }

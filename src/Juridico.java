@@ -14,4 +14,19 @@ public class Juridico extends Cliente {
 	public boolean sos(String n) {
 		return cuit.equalsIgnoreCase(n);
 	}
+
+	@Override
+	public String toString() {
+		var sb = new StringBuilder();
+
+		sb.append("Razon social: ");
+		sb.append(razonSocial);
+		sb.append("\n");
+
+		sb.append("CUIT: ");
+		sb.append(cuit);
+		sb.append("\n");
+
+		return sb.toString();
+	}
 }

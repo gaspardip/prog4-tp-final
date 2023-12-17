@@ -11,28 +11,27 @@ public class Ejecutora {
 
 		Banco banco = new Banco();
 
-		String nroCliente;
-		int opcion, codPres, codSoli;
+		int opcion;
 
 		do {
-			System.out.print("\n[1] Agregar un prestamo");
-			System.out.print("\n[2] Agregar un cliente");
-			System.out.print("\n[3] Inscribir un cliente a un préstamo");
-			System.out.print("\n[4] Asignar préstamo a cliente");
-			System.out.print("\n[5] Registrar items para requisitos");
-			System.out.print("\n[6] Modificar puntuación del cliente");
-			System.out.print("\n[7] Informar clientes");
-			System.out.print("\n[8] Informar clientes inscriptos y asignados dado un prestamo");
-			System.out.print("\n[9] Informar prestamos creados");
-			System.out.print("\n[10] Informar los requisitos de los items disponibles");
-			System.out.print("\n[11] Eliminar un préstamo");
-			System.out.print("\n[12] Eliminar solicitud de cliente");
+			System.out.println("[1] Agregar un prestamo");
+			System.out.println("[2] Agregar un cliente");
+			System.out.println("[3] Inscribir un cliente a un préstamo");
+			System.out.println("[4] Asignar préstamo a cliente");
+			System.out.println("[5] Registrar items para requisitos");
+			System.out.println("[6] Modificar puntuación del cliente");
+			System.out.println("[7] Informar clientes");
+			System.out.println("[8] Informar clientes inscriptos y asignados dado un prestamo");
+			System.out.println("[9] Informar prestamos creados");
+			System.out.println("[10] Informar los requisitos de los items disponibles");
+			System.out.println("[11] Eliminar un préstamo");
+			System.out.println("[12] Eliminar solicitud de cliente");
 
-			System.out.print("\nIngrese una opcion: ");
+			System.out.println("Ingrese una opcion: ");
 
 			opcion = in.nextInt();
 
-			System.out.print("\n-------------------------\n");
+			System.out.println("-------------------------");
 
 			switch (opcion) {
 				case 1:
@@ -44,16 +43,12 @@ public class Ejecutora {
 					break;
 
 				case 3:
-					System.out.println("Ingrese numero cliente: ");
-					nroCliente = in.next();
-					System.out.println("Ingrese codigo de prestamo: ");
-					codPres = in.nextInt();
-					banco.inscripcionAPrestamo(nroCliente, codPres);
+
+					banco.inscripcionAPrestamo();
 					break;
 
 				case 4:
-					System.out.println("Ingrese numero de solicitud");
-					codSoli = in.nextInt();
+
 					// bco.asignarPrestamoCliente(codSoli);
 					break;
 
@@ -79,9 +74,8 @@ public class Ejecutora {
 				case 12:
 					banco.eliminarSolicitudCliente();
 					break;
-
 			}
-			System.out.print("\n-------------------------\n");
+			System.out.println("-------------------------");
 		} while (opcion != 0);
 
 		in.close();

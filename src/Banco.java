@@ -15,26 +15,28 @@ public class Banco {
 	public void registrarPrestamo() {
 		Scanner in = new Scanner(System.in);
 
-		System.out.println("---- REGISTRAR PRESTAMO ---- ");
+		Titulo.mostrar("REGISTRAR PRESTAMO");
+
 		System.out.println("ID del prestamo: ");
 		int id = in.nextInt();
-		Prestamo prest = this.buscarPrestamo(id);
 
-		if (prest == null) {
+		Prestamo prestamo = this.buscarPrestamo(id);
+
+		if (prestamo == null) {
 			System.out.println("Tipo de prestamo: ");
-			in.nextLine(); // Llamada a leer linea vacia para control de errores despues de nextInt
+			in.nextLine();
+
 			String tipo = in.nextLine();
 
 			System.out.println("Descripcion del prestamo: ");
 			String descr = in.nextLine();
 
 			String moneda;
+
 			do {
 				System.out.println("Moneda del prestamo (Peso/Dolar): ");
 				moneda = in.nextLine();
-			} while (!(moneda.equalsIgnoreCase("Dolar") || moneda.equalsIgnoreCase("Peso"))); // Se ejecutara mientras
-																								// moneda no sea ni peso
-																								// ni dolar
+			} while (!(moneda.equalsIgnoreCase("Dolar") || moneda.equalsIgnoreCase("Peso")));
 
 			System.out.println("Monto del prestamo: ");
 			double monto = in.nextDouble();
@@ -43,6 +45,7 @@ public class Banco {
 			System.out.println("Carga de requisitos minimos para solicitar este prestamo. ");
 
 			int opc = 1;
+
 			do {
 				System.out.println("Ingrese el nombre del requisito a añadir puntaje minimo: ");
 				in.nextLine();
@@ -51,8 +54,9 @@ public class Banco {
 
 				int op = 1;
 				while (i == null) {
-					System.out.println(
-							"El requisito ingresado no se encuentra entre los requisitos existentes. \nDesea crear uno nuevo con ese nombre? (1 = Si ; 0 = No)");
+					System.out.println("El requisito ingresado no se encuentra entre los requisitos existentes");
+					System.out.println("Desea crear uno nuevo con ese nombre? (1 = Si ; 0 = No)");
+
 					op = in.nextInt();
 
 					if (op == 1) {
@@ -89,8 +93,11 @@ public class Banco {
 				prestamos.add(prestamoPeso);
 			}
 
-		} else
-			System.out.println("Ya existe un prestamo con ese mismo codigo!");
+		} else {
+			System.out.println("Ya existe un prestamo con ese mismo codigo");
+		}
+
+		in.close();
 	}
 
 	public void registrarCliente() {
@@ -150,10 +157,16 @@ public class Banco {
 		in.close();
 	}
 
-	public void inscripcionAPrestamo(String numeroCliente, int codigoPrestamo) {
+	public void inscripcionAPrestamo() {
 		Scanner in = new Scanner(System.in);
 
 		Titulo.mostrar("INSCRIPCION A PRESTAMO");
+
+		System.out.println("Ingrese numero cliente: ");
+		String numeroCliente = in.next();
+
+		System.out.println("Ingrese codigo de prestamo: ");
+		int codigoPrestamo = in.nextInt();
 
 		Cliente cliente = this.buscarCliente(numeroCliente);
 
@@ -161,15 +174,16 @@ public class Banco {
 			Prestamo prestamo = this.buscarPrestamo(codigoPrestamo);
 
 			if (prestamo != null) {
-				System.out.print("\nIngrese el numero de solicitud de prestamo: ");
+				System.out.println("Ingrese el numero de solicitud de prestamo: ");
+
 				int numeroSolicitud = in.nextInt();
+
 				SolicitudPrestamo solicitud = this.buscarSolicitud(numeroSolicitud);
 
 				if (solicitud == null) {
 					solicitud = new SolicitudPrestamo(cliente, prestamo, numeroSolicitud);
 					solicitudesPrestamos.add(solicitud);
 					registrarPuntuacion(cliente, prestamo);
-
 				} else {
 					System.out.println("Ya existe una solicitud con ese numero ");
 				}
@@ -351,6 +365,14 @@ public class Banco {
 
 		for (Prestamo prestamo : prestamos) {
 			System.out.println(prestamo);
+		}
+	}
+
+	public void informarClientes() {
+		Titulo.mostrar("CLIENTES");
+
+		for (Cliente cliente : clientes) {
+			System.out.println(cliente);
 		}
 	}
 }
