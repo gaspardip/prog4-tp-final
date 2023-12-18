@@ -6,7 +6,7 @@ public class Ejecutora {
 		Scanner in = new Scanner(System.in);
 		Banco banco = new Banco();
 
-		int opcion;
+		int opcion, idPres;
 
 		do {
 			System.out.println("[1] Agregar un prestamo");
@@ -23,10 +23,10 @@ public class Ejecutora {
 			System.out.println("[12] Eliminar solicitud de cliente");
 
 			System.out.println("Ingrese una opcion: ");
-
+			
 			opcion = in.nextInt();
-
-			System.out.println("-------------------------");
+			
+			System.out.println("\n-------------------------\n");
 
 			switch (opcion) {
 				case 1:
@@ -50,7 +50,7 @@ public class Ejecutora {
 					break;
 
 				case 6:
-					// banco.modificarPuntuacionCliente();
+					banco.modificarPuntuacionCliente();
 					break;
 
 				case 7:
@@ -58,12 +58,17 @@ public class Ejecutora {
 					break;
 
 				case 8:
+					System.out.println("Ingrese ID de prestamo: ");
+					idPres = in.nextInt();
+					banco.informarInscriptosYAsignados(idPres);
 					break;
 
 				case 9:
+					banco.informarPrestamos();
 					break;
 
 				case 10:
+					banco.informarItemsRequisitosDisponibles();
 					break;
 
 				case 11:
@@ -77,8 +82,6 @@ public class Ejecutora {
 			}
 			System.out.println("-------------------------");
 		} while (opcion != 0);
-
-		in.close();
 
 	}
 }

@@ -1,3 +1,4 @@
+import java.util.Enumeration;
 import java.util.Hashtable;
 
 public abstract class Prestamo {
@@ -36,37 +37,21 @@ public abstract class Prestamo {
 		return nombre;
 	}
 
-	@Override
-	public String toString() {
-		var sb = new StringBuilder();
+	public void mostrate()
+	{
+		System.out.print("\nID del prestamo: " + idPrestamo);
+		System.out.print("\nTipo de prestamo: " + tipo);
+		System.out.print("\nDescripcion: " + descripcion);
+		
+		System.out.print("\nRequisitos minimos: ");
+		Item i;
+		Enumeration<Item>enumItem=requisitosMinimos.keys();
+        while(enumItem.hasMoreElements())
+        {                                                                
+            i=enumItem.nextElement();
+            System.out.println("\nRequisito: " + i.getNombre() + "    Puntuacion Minima: " + requisitosMinimos.get(i));
+        }            
 
-		sb.append("ID: ");
-		sb.append(idPrestamo);
-		sb.append("\n");
-
-		sb.append("Tipo: ");
-		sb.append(tipo);
-		sb.append("\n");
-
-		sb.append("Descripcion: ");
-		sb.append(descripcion);
-		sb.append("\n");
-
-		sb.append("Requisitos minimos: ");
-
-		for (var item : requisitosMinimos.keySet()) {
-			sb.append(item);
-			sb.append(": ");
-			sb.append(requisitosMinimos.get(item));
-			sb.append(" ");
-		}
-
-		sb.append("\n");
-
-		sb.append("Monto: ");
-		sb.append(monto);
-		sb.append("\n");
-
-		return sb.toString();
+		System.out.print("Monto: " + monto);
 	}
 }

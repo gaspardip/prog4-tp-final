@@ -30,32 +30,23 @@ public class Fisico extends Cliente {
 			System.out.print("ingrese el maximo de prestamos que puede solicitar un cliente fisico: ");
 
 			maxPrestamosVigentes = in.nextInt();
-
-			in.close();
 		}
 
 		return maxPrestamosVigentes;
 	}
 
-	@Override
-	public String toString() {
-		var sb = new StringBuilder();
+	public void informate()
+	{
+		System.out.println("--------DATOS PERSONALES--------");
+		System.out.println("Nombre: "+nombre);
+		System.out.println("Apellido: "+apellido);
+		System.out.println("Dni: "+dni);
+		super.informate();
+	}
 
-		sb.append("Nombre: ");
-		sb.append(nombre);
-		sb.append("\n");
-
-		sb.append("Apellido: ");
-		sb.append(apellido);
-		sb.append("\n");
-
-		sb.append("DNI: ");
-		sb.append(dni);
-		sb.append("\n");
-
-		sb.append(super.toString());
-
-		return sb.toString();
+	public void mostrarDatosBasicos()
+	{
+		System.out.println("\nCLIENTE FISICO\nNombre completo: " + nombre + " " + apellido + "\nDNI: " + dni);
 	}
 
 }

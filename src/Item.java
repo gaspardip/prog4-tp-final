@@ -17,4 +17,10 @@ public class Item {
     {
         return nombre;
     }
+
+	public void mostrate()
+	{
+		System.out.println("Nombre del item: " + nombre);
+		System.out.println("Descripcion del item: " + descripcion + "\n");
+	}
 }

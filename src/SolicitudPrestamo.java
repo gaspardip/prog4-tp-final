@@ -46,27 +46,26 @@ public class SolicitudPrestamo {
 			System.out.println("Cliente asignado al prestamo con exito!");
 		}
 	}
+	
+	public int getCodigo()
+	{
+		return codigoSolicitud;
+	}
 
-	@Override
-	public String toString() {
-		var sb = new StringBuilder();
+	public void mostrate()
+	{
+		System.out.println("Tipo de prestamo: "+prestamo.getTipo());
+		System.out.println("Codigo de solicitud: "+this.codigoSolicitud);
+		System.out.println("Estado: "+this.estado);
+	}
 
-		sb.append("Codigo de solicitud: ");
-		sb.append(codigoSolicitud);
-		sb.append("\n");
+	public void mostrarCliente()
+	{
+		cliente.mostrarDatosBasicos();
+	}
 
-		sb.append("Estado: ");
-		sb.append(estado);
-		sb.append("\n");
-
-		sb.append("Cliente: ");
-		sb.append(cliente);
-		sb.append("\n");
-
-		sb.append("Prestamo: ");
-		sb.append(prestamo);
-		sb.append("\n");
-
-		return sb.toString();
+	public String getEstado()
+	{
+		return estado;
 	}
 }

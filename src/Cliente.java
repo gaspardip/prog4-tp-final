@@ -1,6 +1,7 @@
 import java.util.ArrayList;
+import java.util.Scanner;
+import java.util.Enumeration;
 import java.util.Hashtable;
-
 import Utilidades.Fecha;
 
 public abstract class Cliente {
@@ -14,8 +15,20 @@ public abstract class Cliente {
 
 	public abstract boolean sos(String n);
 
+	public abstract void mostrarDatosBasicos();
+
 	public boolean hasItem(Item item) {
 		return puntuaciones.containsKey(item);
+	}
+	
+	public SolicitudPrestamo getSolicitud(int n)
+	{
+		for (SolicitudPrestamo s : solicitudesPrestamos)
+		{
+			if (s.getCodigo() == n)
+				return s;
+		}
+		return null;
 	}
 
 	public int getPuntaje(Item item) {
@@ -52,30 +65,51 @@ public abstract class Cliente {
 		solicitudesPrestamos.add(solicitud);
 	}
 
-	@Override
-	public String toString() {
-		var sb = new StringBuilder();
-
-		sb.append("Fecha de registro: ");
-		sb.append(fechaRegistro);
-		sb.append("\n");
-
-		sb.append("Puntuaciones: ");
-
-		for (Item item : puntuaciones.keySet()) {
-			sb.append(item);
-			sb.append(": ");
-			sb.append(puntuaciones.get(item));
-			sb.append("\n");
+	public void informate()
+	{
+		System.out.println("--------DATOS REGISTRO Y PUNTUACIONES DEL CLIENTE--------");
+		Item i;
+        System.out.println("Fecha de registro: " + fechaRegistro);
+        Enumeration<Item>enumItem=puntuaciones.keys();
+        while(enumItem.hasMoreElements())
+        {                                                                
+            i=enumItem.nextElement();
+            System.out.println("Item: " + i.getNombre() + " Puntuacion Minima: " + puntuaciones.get(i));
+        }                                                                                                           
+        System.out.println("--------DATOS DE PRESTAMOS SOLICITADOS--------");
+        mostrarSolicitudes();
+        
+	}
+	
+	
+	public void modificarPuntuacion()
+    {
+        Scanner in = new Scanner (System.in);
+        Item i;
+        int p;
+        Enumeration<Item> enumItems = puntuaciones.keys();
+        
+        while(enumItems.hasMoreElements())
+        {
+            i=enumItems.nextElement();
+            System.out.println("Categoria " + i.getNombre() + " , Puntuacion actual:" + puntuaciones.get(i));
+            System.out.println("Ingresa la nueva puntuacion: ");
+            p = in.nextInt();
+            puntuaciones.put(i, p);
+        }
+    }
+	
+	public void mostrarSolicitudes()
+	{
+		for (SolicitudPrestamo s : solicitudesPrestamos)
+		{
+			s.mostrate();
+			System.out.println(" ");
 		}
-
-		sb.append("Solicitudes de prestamo: ");
-
-		for (SolicitudPrestamo solicitudPrestamo : solicitudesPrestamos) {
-			sb.append(solicitudPrestamo);
-			sb.append("\n");
-		}
-
-		return sb.toString();
+	}
+	
+	public void eliminarSolicitud(SolicitudPrestamo s)
+	{
+		solicitudesPrestamos.remove(s);
 	}
 }

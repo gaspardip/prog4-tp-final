@@ -14,21 +14,17 @@ public class Juridico extends Cliente {
 		return cuit.equalsIgnoreCase(n);
 	}
 
-	@Override
-	public String toString() {
-		var sb = new StringBuilder();
+	public void informate()
+	{
+		System.out.println("--------DATOS DE ENTIDAD--------");
+		System.out.println("Razon social: " + razonSocial);
+		System.out.println("Cuit: " + cuit);
+		super.informate();
+	}
 
-		sb.append("Razon social: ");
-		sb.append(razonSocial);
-		sb.append("\n");
-
-		sb.append("CUIT: ");
-		sb.append(cuit);
-		sb.append("\n");
-
-		sb.append(super.toString());
-
-		return sb.toString();
+	public void mostrarDatosBasicos()
+	{
+		System.out.println("\nCLIENTE JURIDICO\nRazon Social: " + razonSocial + "\nCuit: " + cuit);
 	}
 
 }

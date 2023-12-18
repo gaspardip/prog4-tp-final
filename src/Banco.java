@@ -1,8 +1,6 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.Scanner;
-
 import Utilidades.Fecha;
 import Utilidades.Titulo;
 
@@ -37,9 +35,7 @@ public class Banco {
 			do {
 				System.out.println("Moneda del prestamo (Peso/Dolar): ");
 				moneda = in.nextLine();
-			} while (!(moneda.equalsIgnoreCase("Dolar") || moneda.equalsIgnoreCase("Peso"))); // Se ejecutara mientras
-																								// moneda no sea ni peso
-																								// ni dolar
+			} while (!(moneda.equalsIgnoreCase("Dolar") || moneda.equalsIgnoreCase("Peso"))); 
 
 			System.out.println("Monto del prestamo: ");
 			double monto = in.nextDouble();
@@ -103,7 +99,6 @@ public class Banco {
 			System.out.println("Ya existe un prestamo con ese mismo codigo!");
 		}
 
-		in.close();
 	}
 
 	public void registrarCliente() {
@@ -158,7 +153,6 @@ public class Banco {
 				System.out.println("Ya existe un cliente con ese cuit");
 		}
 
-		in.close();
 	}
 
 	public void inscripcionAPrestamo() {
@@ -197,13 +191,22 @@ public class Banco {
 				}
 
 				if (prestamo != null) {
+					
 					String tipoDePrestamo = prestamo.tipoDePrestamo();
-					int antiguedad = cliente.antiguedad();
+					int antiguedad = 0;
+					int antiguedadMinima = 0;
 
-					if (tipoDePrestamo.equalsIgnoreCase("dolar") && antiguedad < 2) {
+					if (tipoDePrestamo.equalsIgnoreCase("dolar"))
+					{
+						antiguedad = cliente.antiguedad();
+						antiguedadMinima = ((Dolar) prestamo).getAntiguedadMinima();
+					}
+
+					if (tipoDePrestamo.equalsIgnoreCase("dolar") && antiguedad < antiguedadMinima) {
 						System.out.println(
 								"La antiguedad del cliente no alcanza la minima de 2 años para aceptar el prestamo en dolares");
 					} else {
+
 						System.out.println("Ingrese el numero de solicitud de prestamo: ");
 						int numeroSolicitud = in.nextInt();
 						SolicitudPrestamo solicitud = this.buscarSolicitud(numeroSolicitud);
@@ -224,8 +227,6 @@ public class Banco {
 		} else {
 			System.out.println("El cliente no existe ");
 		}
-
-		in.close();
 	}
 
 	public void registrarItem() {
@@ -237,26 +238,25 @@ public class Banco {
 
 		do {
 			System.out.println("Nombre del item: ");
-			String name = in.next();
+			String name = in.nextLine();
 			Item item = this.buscarItem(name);
 
 			if (item == null) {
 				System.out.println("Descripcion del item: ");
-				String descr = in.next();
+				String descr = in.nextLine();
 
 				Item itemReq = new Item(name, descr);
 				itemsRequisitos.add(itemReq);
 
-				System.out.print("Item ingresado exitosamente.");
+				System.out.print("Item ingresado exitosamente.\n");
 			} else {
 				System.out.println("Ya existe un item con ese mismo nombre!");
 			}
 
 			System.out.print("Deseas agregar algun otro item? (1 = Si ; 0 = No)");
 			opc = in.nextInt();
+			in.nextLine();
 		} while (opc == 1);
-
-		in.close();
 	}
 
 	private void registrarPuntuacion(Cliente cliente, Prestamo prestamo) {
@@ -287,7 +287,6 @@ public class Banco {
 			}
 		}
 
-		in.close();
 	}
 
 	public void asignarPrestamoCliente() {
@@ -307,18 +306,23 @@ public class Banco {
 			System.out.println("La solicitud no existe");
 		}
 
-		in.close();
 	}
 
-	/*
-	 * public void modificarPuntuacionCliente()
-	 * {
-	 * Scanner s = new Scanner (System.in);
-	 * System.out.println("---- MODIFICAR PUNTUACION DE CLIENTE ----");
-	 * System.out.println("Ingresa el DNI o CUIT del cliente: ");
-	 *
-	 * }
-	 */
+	 public void modificarPuntuacionCliente()
+	 {
+	     Scanner s = new Scanner (System.in);
+	     System.out.println("---- MODIFICAR PUNTUACION DE CLIENTE ----");
+	        
+	     System.out.println("Ingresa el DNI o CUIT del cliente: ");
+	     String n = s.next();
+	     Cliente c = buscarCliente(n);
+	        
+	     if (c != null)
+	         c.modificarPuntuacion();
+	     else
+	         System.out.println("No existe ningun cliente con ese DNI o CUIT");
+	    
+	 }
 
 	private SolicitudPrestamo buscarSolicitud(int numeroSolicitud) {
 		int i = 0;
@@ -331,12 +335,6 @@ public class Banco {
 			return solicitudesPrestamos.get(i);
 		} else
 			return null;
-	}
-
-	private SolicitudPrestamo[] buscarSolicitudes(int idPrestamo) {
-
-		return solicitudesPrestamos.stream().filter(s -> s.getPrestamo().sos(idPrestamo))
-				.toArray(SolicitudPrestamo[]::new);
 	}
 
 	private Prestamo buscarPrestamo(int id) {
@@ -369,83 +367,80 @@ public class Banco {
 
 		return i != clientes.size() ? clientes.get(i) : null;
 	}
+	
+
 
 	public void eliminarPrestamo() {
 		Scanner in = new Scanner(System.in);
 
 		Titulo.mostrar("ELIMINAR PRESTAMO");
-
 		System.out.println("ID del prestamo: ");
 
 		int idPrestamo = in.nextInt();
-
 		Prestamo prestamo = this.buscarPrestamo(idPrestamo);
+		
+		if (prestamo != null)
+		{
+			ArrayList<SolicitudPrestamo> solicitudesAEliminar = new ArrayList<>();
 
-		if (prestamo != null) {
-			SolicitudPrestamo[] solicitudes = this.buscarSolicitudes(idPrestamo);
-
-			for (SolicitudPrestamo solicitud : solicitudes) {
-				solicitudesPrestamos.remove(solicitud);
-			}
-
-			prestamos.remove(prestamo);
-
-			System.out.println("Prestamo eliminado exitosamente");
-		} else {
-			System.out.println("No existe un prestamo con ese codigo");
+		    for (SolicitudPrestamo s : solicitudesPrestamos) 
+		    {
+		    	if (s.getPrestamo() == prestamo) 
+		    	{
+		            Cliente cli = s.getCliente();
+		            cli.eliminarSolicitud(s); //Elimina la solicitud de ese prestamo que se guarda dentro del cliente
+		            solicitudesAEliminar.add(s); //Agrega la solicitud a un array temporal para luego eliminar todas las solicitudes de ese prestamo guardadas en banco
+		        }
+		    }
+		    
+		    solicitudesPrestamos.removeAll(solicitudesAEliminar); 
+		    prestamos.remove(prestamo); 
+		    System.out.println("El prestamo y las solicitudes a el mismo se eliminaron correctamente!");
 		}
-
-		in.close();
+		else
+		{
+			System.out.println("No existe ningun prestamo con el id indicado");
+		}
 	}
 
 	public void eliminarSolicitudCliente() {
 		Scanner in = new Scanner(System.in);
-
+		
 		Titulo.mostrar("ELIMINAR SOLICITUD DE CLIENTE");
+		System.out.println("DNI o CUIT del cliente: ");
 
-		System.out.println("ID del prestamo: ");
-
-		int idPrestamo = in.nextInt();
-
-		Prestamo prestamo = this.buscarPrestamo(idPrestamo);
-
-		if (prestamo != null) {
-			SolicitudPrestamo[] solicitudes = this.buscarSolicitudes(idPrestamo);
-
-			System.out.println("Numero de cliente");
-
-			String numeroCliente = in.next();
-
-			Cliente cliente = this.buscarCliente(numeroCliente);
-
-			if (cliente != null) {
-				SolicitudPrestamo solicitud = Arrays
-						.stream(solicitudes)
-						.filter(s -> s.getCliente().sos(numeroCliente))
-						.findFirst().orElse(null);
-
-				if (solicitud != null) {
-					solicitudesPrestamos.remove(solicitud);
-
-					System.out.println("Solicitud eliminada exitosamente.");
-				} else {
-					System.out.println("No existe una solicitud con ese codigo!");
-				}
-			} else {
-				System.out.println("No existe un cliente con ese numero");
+		String n = in.next();
+		Cliente cliente = this.buscarCliente(n);
+		
+		if (cliente != null)
+		{
+			System.out.println("SOLICITUDES REGISTRADAS DEL CLIENTE INGRESADO: ");
+			cliente.mostrarSolicitudes();
+			
+			System.out.println("\nIngresa el codigo de la solicitud que desees eliminar: ");
+			int cod = in.nextInt();
+			SolicitudPrestamo soli = cliente.getSolicitud(cod);
+			while (soli == null) //Se repite hasta que se ingrese un codigo de solicitud que se encuentre en el cliente
+			{
+				System.out.println("\nIngresa un codigo valido: ");
+				cod = in.nextInt();
+				soli = cliente.getSolicitud(cod);
 			}
-		} else {
-			System.out.println("No existe un prestamo con ese codigo");
+			cliente.eliminarSolicitud(soli);	//Le damos la instancia solicitud y la elimina del cliente
+			solicitudesPrestamos.remove(soli);  //Le damos la instancia solicitud y la elimina de las solicitudes en banco
+			System.out.println("La solicitud se elimino correctamente!");
+		}
+		else {
+			System.out.println("El DNI o CUIT ingresado no corresponde a ningun cliente");
 		}
 
-		in.close();
 	}
 
 	public void informarPrestamos() {
 		Titulo.mostrar("PRESTAMOS");
 
 		for (Prestamo prestamo : prestamos) {
-			System.out.println(prestamo);
+			prestamo.mostrate();
 		}
 	}
 
@@ -453,8 +448,47 @@ public class Banco {
 		Titulo.mostrar("CLIENTES");
 
 		for (Cliente cliente : clientes) {
-			System.out.println(cliente);
+			cliente.informate();
+		}
+	}
+	
+	public void informarInscriptosYAsignados(int id)
+	{
+		Prestamo pres = buscarPrestamo(id);
+		if (pres != null)
+		{
+			System.out.println("Inscriptos a prestamo " + pres.getTipo() + ":");
+			for(SolicitudPrestamo s : solicitudesPrestamos) 
+			{
+				if(s.getPrestamo() == pres && s.getEstado().equalsIgnoreCase("Inscripto"))
+				{
+					s.mostrarCliente();
+				}
+			}
+
+			System.out.println("Asignados a prestamo " + pres.getTipo() + ":");
+			for(SolicitudPrestamo s : solicitudesPrestamos) 
+			{
+				if(s.getPrestamo() == pres && s.getEstado().equalsIgnoreCase("Asignado"))
+				{
+					s.mostrarCliente();
+				}
+			}
+		}
+		else
+		{
+			System.out.println("No existe ningun prestamo con el id ingresado! ");
+		}
+	}
+
+	public void informarItemsRequisitosDisponibles()
+	{
+		for (Item i : itemsRequisitos)
+		{
+			i.mostrate();
 		}
 	}
 
 }
+
+
