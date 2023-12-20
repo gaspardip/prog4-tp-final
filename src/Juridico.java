@@ -1,4 +1,5 @@
 import Utilidades.Fecha;
+import Utilidades.Titulo;
 
 public class Juridico extends Cliente {
 	private String razonSocial;
@@ -14,16 +15,14 @@ public class Juridico extends Cliente {
 		return cuit.equalsIgnoreCase(n);
 	}
 
-	public void informate()
-	{
-		System.out.println("--------DATOS DE ENTIDAD--------");
+	public void informate() {
+		Titulo.mostrar("DATOS DE ENTIDAD");
 		System.out.println("Razon social: " + razonSocial);
 		System.out.println("Cuit: " + cuit);
 		super.informate();
 	}
 
-	public void mostrarDatosBasicos()
-	{
+	public void mostrarDatosBasicos() {
 		System.out.println("\nCLIENTE JURIDICO\nRazon Social: " + razonSocial + "\nCuit: " + cuit);
 	}
 

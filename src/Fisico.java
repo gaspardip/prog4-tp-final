@@ -35,17 +35,15 @@ public class Fisico extends Cliente {
 		return maxPrestamosVigentes;
 	}
 
-	public void informate()
-	{
+	public void informate() {
 		System.out.println("--------DATOS PERSONALES--------");
-		System.out.println("Nombre: "+nombre);
-		System.out.println("Apellido: "+apellido);
-		System.out.println("Dni: "+dni);
+		System.out.println("Nombre: " + nombre);
+		System.out.println("Apellido: " + apellido);
+		System.out.println("Dni: " + dni);
 		super.informate();
 	}
 
-	public void mostrarDatosBasicos()
-	{
+	public void mostrarDatosBasicos() {
 		System.out.println("\nCLIENTE FISICO\nNombre completo: " + nombre + " " + apellido + "\nDNI: " + dni);
 	}
 

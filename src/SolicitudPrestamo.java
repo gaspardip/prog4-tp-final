@@ -46,26 +46,22 @@ public class SolicitudPrestamo {
 			System.out.println("Cliente asignado al prestamo con exito!");
 		}
 	}
-	
-	public int getCodigo()
-	{
+
+	public int getCodigo() {
 		return codigoSolicitud;
 	}
 
-	public void mostrate()
-	{
-		System.out.println("Tipo de prestamo: "+prestamo.getTipo());
-		System.out.println("Codigo de solicitud: "+this.codigoSolicitud);
-		System.out.println("Estado: "+this.estado);
+	public void mostrate() {
+		System.out.println("Tipo de prestamo: " + prestamo.getTipo());
+		System.out.println("Codigo de solicitud: " + this.codigoSolicitud);
+		System.out.println("Estado: " + this.estado);
 	}
 
-	public void mostrarCliente()
-	{
+	public void mostrarCliente() {
 		cliente.mostrarDatosBasicos();
 	}
 
-	public String getEstado()
-	{
+	public String getEstado() {
 		return estado;
 	}
 }

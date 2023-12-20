@@ -4,9 +4,10 @@ public class Ejecutora {
 
 	public static void main(String[] args) {
 		Scanner in = new Scanner(System.in);
+
 		Banco banco = new Banco();
 
-		int opcion, idPres;
+		int opcion;
 
 		do {
 			System.out.println("[1] Agregar un prestamo");
@@ -23,9 +24,9 @@ public class Ejecutora {
 			System.out.println("[12] Eliminar solicitud de cliente");
 
 			System.out.println("Ingrese una opcion: ");
-			
+
 			opcion = in.nextInt();
-			
+
 			System.out.println("\n-------------------------\n");
 
 			switch (opcion) {
@@ -58,9 +59,7 @@ public class Ejecutora {
 					break;
 
 				case 8:
-					System.out.println("Ingrese ID de prestamo: ");
-					idPres = in.nextInt();
-					banco.informarInscriptosYAsignados(idPres);
+					banco.informarInscriptosYAsignados();
 					break;
 
 				case 9:

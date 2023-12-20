@@ -37,20 +37,19 @@ public abstract class Prestamo {
 		return nombre;
 	}
 
-	public void mostrate()
-	{
+	public void mostrate() {
 		System.out.print("\nID del prestamo: " + idPrestamo);
 		System.out.print("\nTipo de prestamo: " + tipo);
 		System.out.print("\nDescripcion: " + descripcion);
-		
+
 		System.out.print("\nRequisitos minimos: ");
 		Item i;
-		Enumeration<Item>enumItem=requisitosMinimos.keys();
-        while(enumItem.hasMoreElements())
-        {                                                                
-            i=enumItem.nextElement();
-            System.out.println("\nRequisito: " + i.getNombre() + "    Puntuacion Minima: " + requisitosMinimos.get(i));
-        }            
+		Enumeration<Item> enumItem = requisitosMinimos.keys();
+
+		while (enumItem.hasMoreElements()) {
+			i = enumItem.nextElement();
+			System.out.println("\nRequisito: " + i.getNombre() + "    Puntuacion Minima: " + requisitosMinimos.get(i));
+		}
 
 		System.out.print("Monto: " + monto);
 	}
